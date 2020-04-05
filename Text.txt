@@ -1,0 +1,90 @@
+Am folosit conexiunea cu oracle, prin biblioteca ojdbc8.jar
+
+Aceasta am integrat-o intre librariile maven prin comanda
+
+mvn install:install-file -Dfile=path/to/your/ojdbc8.jar -DgroupId=com.oracle -DartifactId=ojdbc8 -Dversion=19.3 -Dpackaging=jar
+
+si apoi am adaugat-o in fisierul pom.xml, prin bucata selectata;
+
+
+Am creat baza de date ceruta in sqldeveloper, dar voi demonstra functionalitatea ei in sql plus, pentru ca este mai usor
+
+
+url-ul de conectare este cel standard:
+
+jdbc:oracle:thin:@localhost:1521:xe
+
+insa user-ul nu este "DBA", ci "DBB", pentru ca "DBA" nu a putut fi folosit;
+
+
+initial nu avem nici un tabel
+
+
+am rescris interogarea data in standardul oracle sql, pentru ca in versiunile mai vechi de oracle (eu folosesc oracle11g) nu exista auto-increment pentru cheie primara, si acest lucru trebuie simulat cu un trigger si o secventa;
+
+
+bucata de cod selectata creaza tabelul artists, cu cele 3 campuri, dintre care primul este cheie primara, deci este si not null implicit
+
+
+se poate observa ca tabelul a fost creat daca ii dam drop din sqlPlus
+
+In continuare voi creea secventa si triggerul pentru a implementa auto incrementul pe cheia primara
+
+create sequence FOO_seq;
+
+creaza o secventa in sql
+
+si urmatoarea bucata de cod creeaza un trigger care 
+de fiecare data cand se da insert in
+artists, pune automat pe campul id
+
+FOO_seq.nextval, adica urmatoarea
+valoare din secventa
+
+
+Astfel o sa fie un autoincrement de fiecare data cand inseram in tabelul
+artists celelalte 2 campuri diferite
+de cheia primara
+
+exact la fel sunt create si pentru tabelul albums;
+in standardul oracle sql, nu mai trebuie pus on delete restrict, deoarece este alegerea implicita pentru crearea unei referinte.
+
+este de ajuns sa adaugam doar
+
+"foreign key (artist_id) references artists (id)" si atunci cand vom vrea sa stergem un artist care are o referinta in albums, ne va da o eroare
+
+dupa ce am creeat cele 2 tabele vom insera date
+
+initial vom insera 4 artisti
+
+putem vedea ca artistii au fost inserati printr-un select in sql plus
+
+
+dupa cum se observa, cei 4 artisti au fost inserati cu succes;
+
+autoincrementul se poate vedea tot prin select
+
+vom creea acum 7 albume, dintre care primele 3 sunt ale primului artist, si ultimele 2 ale celui de-al patrulea artist
+
+
+albumele pot fi observate in sql plus
+
+nu se vede bine linia datorita spatiului prea mare alocat in creearea tabelului
+
+
+
+dar exista liniile in cele 2 tabele
+
+acum vom cauta toti artistii pe care ii cheama Artist1, momentan exista numai unul, si el va fi afisat;
+
+exista mai multe albume scrise de primul artist:
+
+Album{id=1, name='Album1', artistId=1, releaseYear=2010}
+Album{id=2, name='Album2', artistId=1, releaseYear=2011}
+Album{id=3, name='Album3', artistId=1, releaseYear=2012}
+
+
+
+
+
+

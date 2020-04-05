@@ -14,7 +14,7 @@ public class Database {
     private static Database instance;
     private Connection con;
     private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    private String user = "dba";
+    private String user = "dbb";
     private String password = "sql";
 
     private Database() throws SQLException {
