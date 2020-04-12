@@ -1,11 +1,13 @@
 package org.example;
 
+import com.github.javafaker.Faker;
 import org.example.dao.AlbumController;
 import org.example.dao.ArtistController;
 import org.example.db.Database;
 import org.example.db.DatabaseOperations;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,7 +25,7 @@ public class App {
         System.out.println("Hello World!");
         try {
             DatabaseOperations op = new DatabaseOperations();
-            op.executeUpdate("create table artists(" +
+/*            op.executeUpdate("create table artists(" +
                     "id integer primary key," +
                     "name varchar(100) not null," +
                     "country varchar(100)" +
@@ -58,24 +60,32 @@ public class App {
                     "for each row " +
                     "begin " +
                     "select FOO_seq2.nextval into :new.id from dual; " +
-                    "end; ");
+                    "end; ");*/
 
 //
             AlbumController albumController = new AlbumController(Database.getInstance().getConnection());
             ArtistController artistController = new ArtistController(Database.getInstance().getConnection());
 //
 //
-            artistController.create("Artist1", "Country1");
-            artistController.create("Artist2", "Country1");
-            artistController.create("Artist3", "Country2");
-            artistController.create("Artist4", "Country3");
-            albumController.create("Album1", 1, 2010);
-            albumController.create("Album2", 1, 2011);
-            albumController.create("Album3", 1, 2012);
-            albumController.create("Album4", 2, 2013);
-            albumController.create("Album5", 3, 2014);
-            albumController.create("Album6", 4, 2015);
-            albumController.create("Album7", 4, 2016);
+            List<Artist> insertedArtists=new ArrayList<>();
+            for (int i=0; i<4; i++){
+                insertedArtists.add(new Artist(i, new Faker().name().fullName(), new Faker().nation().nationality()));
+            }
+            List<Album> insertedAlbums=new ArrayList<>();
+            for (int i=0; i<6; i++){
+                insertedAlbums.add(new Album(i, new Faker().funnyName().name(), i%4, 2010+i));
+            }
+            artistController.create(new Faker().name().fullName(), new Faker().nation().nationality());
+            artistController.create(new Faker().name().fullName(), new Faker().nation().nationality());
+            artistController.create(new Faker().name().fullName(), new Faker().nation().nationality());
+            artistController.create(new Faker().name().fullName(), new Faker().nation().nationality());
+            albumController.create(new Faker().funnyName().name(), 1, 2010);
+            albumController.create(new Faker().funnyName().name(), 1, 2011);
+            albumController.create(new Faker().funnyName().name(), 1, 2012);
+            albumController.create(new Faker().funnyName().name(), 2, 2013);
+            albumController.create(new Faker().funnyName().name(), 3, 2014);
+            albumController.create(new Faker().funnyName().name(), 4, 2015);
+            albumController.create(new Faker().funnyName().name(), 4, 2016);
 //
 //
             List<Artist> artists = artistController.findByName("Artist1");

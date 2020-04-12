@@ -22,3 +22,23 @@ Compulsory{
     8. In metoda main sunt introdusi artisti si albume si sunt cautate si returnate
 
 }
+
+Optional {
+
+    1. Nu a fost facut
+    2. Clasa Album si Artist sunt modele orientate obiect ale unui rand din tabelele artists si albums
+    3. Pentru a fi folosite date random, in fisierul pom.xml au fost adaugate:
+        <dependency>
+          <groupId>com.github.javafaker</groupId>
+          <artifactId>javafaker</artifactId>
+          <version>1.0.2</version>
+        </dependency>
+        -si au fost introduse in tabel nume random in acest mod:
+        new Faker().name().fullName(), new Faker().nation().nationality()
+    4. Nu a fost facut. 
+    
+    
+    Structura bazei de date si functionalitatea ei a fost aratata la Compulsory.
+    Intrucat nu a fost facut tot optionalul deci nu s-au adaugat tabele noi si structura bazei de date e aceeasi,
+    nu am mai facut video.
+}
